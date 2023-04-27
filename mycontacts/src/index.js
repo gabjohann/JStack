@@ -11,6 +11,8 @@ const app = express();
   response.send('Interceptado pelo Middleware');
 }); */
 
+app.use(express.json());
+
 app.use(routes);
 
 app.listen(3000, () =>

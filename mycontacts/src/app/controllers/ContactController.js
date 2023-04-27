@@ -3,11 +3,9 @@ class ContactController {
   async index(request, response) {
     // Listar todos os registros
 
-    /* const contacts = await ContactsRepository.findAll();
+    const contacts = await ContactsRepository.findAll();
 
-    response.json(contacts); */
-
-    response.send(request.appID);
+    response.json(contacts);
   }
 
   async show(request, response) {
@@ -23,8 +21,36 @@ class ContactController {
     response.json(contact);
   }
 
-  store() {
+  async store(request, response) {
     // Criar um novo registro
+
+    const { name, email, phone, category_id } = request.body;
+
+    if (!name) {
+      return response.status(400).json({ error: 'Name is required' });
+    }
+
+    if (!email) {
+      return response.status(400).json({ error: 'E-mail is required' });
+    }
+
+    const contactExists = await ContactsRepository.findByEmail(email);
+
+    if (contactExists) {
+      return response
+        .status(400)
+        .json({ error: 'This e-mail is already been taken' });
+    }
+
+    // por mais que esteja verboso, o código se torna legível
+    const contact = await ContactsRepository.create({
+      name,
+      email,
+      phone,
+      category_id,
+    });
+
+    response.json(contact);
   }
 
   update() {
