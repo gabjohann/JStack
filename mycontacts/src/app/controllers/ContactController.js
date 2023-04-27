@@ -3,9 +3,11 @@ class ContactController {
   async index(request, response) {
     // Listar todos os registros
 
-    const contacts = await ContactsRepository.findAll();
+    /* const contacts = await ContactsRepository.findAll();
 
-    response.json(contacts);
+    response.json(contacts); */
+
+    response.send(request.appID);
   }
 
   async show(request, response) {
